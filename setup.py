@@ -1,8 +1,5 @@
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
-
 setuptools.setup(
     name="basic_zoom",
     version="0.0.1",
@@ -10,7 +7,7 @@ setuptools.setup(
     author_email="jsteinberg@gmail.com",
     install_requires=["requests", "PyJWT", "requests_oauthlib"],
     description="REST api client for Zoom",
-    long_description=long_description,
+    long_description="REST api client for Zoom",
     long_description_content_type="text/markdown",
     url="https://github.com/jsteinberg1/basic_zoom",
     packages=["basic_zoom"],
