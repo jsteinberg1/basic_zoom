@@ -46,10 +46,11 @@ class ZoomAPIClient(object):
 
         # Add retry to handle Zoom API server errors and rate limiting
         retry_strategy = Retry(
-            total=3,
+            total=5,
+            status=3,
             backoff_factor=2,
-            status_forcelist=[429, 500, 502, 503, 504],
-            method_whitelist=["GET", "PUT", "PATCH", "POST", "DELETE"],
+            status_forcelist=[429],
+            allowed_methods=["GET", "PUT", "PATCH", "POST", "DELETE"],
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
         s.mount("https://", adapter)
