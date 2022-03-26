@@ -4,15 +4,19 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from .jwt_auth import JWT_AUTH
+from .s2s_auth import S2S_AUTH
 from .exceptions import ZoomAPIError, ZoomAPIDatetimeError
 
 
 class ZoomAPIClient(object):
     def __init__(
         self,
-        API_KEY: str = None,
-        API_SECRET: str = None,
-        OAuth2Session: OAuth2Session = None,
+        API_KEY: str = None,  # used for JWT
+        API_SECRET: str = None,  # used for JWT
+        ACCOUNT_ID: str = None,  # used for S2S oAuth apps
+        S2S_CLIENT_ID: str = None,  # used for S2S oAuth apps
+        S2S_CLIENT_SECRET: str = None,  # used for S2S oAuth apps
+        OAuth2Session: OAuth2Session = None,  # used for standard oAuth app
     ):
         """Zoom API Client
 
@@ -28,7 +32,13 @@ class ZoomAPIClient(object):
         """
         self._server = "https://api.zoom.us/v2"
 
-        if (API_KEY == None or API_SECRET == None) and OAuth2Session == None:
+        if (
+            (API_KEY == None or API_SECRET == None)
+            and (
+                ACCOUNT_ID == None or S2S_CLIENT_ID == None or S2S_CLIENT_SECRET == None
+            )
+            and OAuth2Session == None
+        ):
             raise RuntimeError(
                 "Must specify either 1) API_KEY and API_SECRET for JWT authentication or 2) OAuth2Session for oAuth authentication"
             )
@@ -38,6 +48,13 @@ class ZoomAPIClient(object):
 
             s = requests.Session()
             s.auth = JWT_AUTH(API_KEY, API_SECRET)
+            s.headers.update({"Content-type": "application/json"})
+
+        elif ACCOUNT_ID and S2S_CLIENT_ID and S2S_CLIENT_SECRET:
+            # using S2S oAuth authentication and standard requests session
+
+            s = requests.Session()
+            s.auth = S2S_AUTH(ACCOUNT_ID, S2S_CLIENT_ID, S2S_CLIENT_SECRET)
             s.headers.update({"Content-type": "application/json"})
 
         elif OAuth2Session:
