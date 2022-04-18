@@ -1,3 +1,4 @@
 PyJWT
 requests
 requests_oauthlib
+rich
