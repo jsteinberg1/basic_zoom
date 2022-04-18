@@ -1,4 +1,5 @@
 import requests
+from urllib.parse import urlparse
 from requests_oauthlib import OAuth2Session
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
@@ -108,7 +109,6 @@ class ZoomAPIClient(object):
             endpoint_url (str): endpoint url
             params (dict, optional): parameters used in HTTP query parameters. Defaults to None.
             raw (bool, optional): If set to 'True' will return raw JSON response as returned from Zoom API.  IF set to 'False', this function will complete pagination and return a list of all data returned on key 'key_in_response_to_return'. Defaults to False.
-            key_in_response_to_return (str, optional): Used to determine the key in the Zoom API response with interesting data to use for pagination. Defaults to None.
 
         Raises:
             ValueError: [description]
@@ -141,7 +141,8 @@ class ZoomAPIClient(object):
             return parsed_response
 
         # Zoom APIs return a JSON with a key determined by the URL that contains the requested data.
-        key_in_response_to_return = endpoint_url.rsplit("/", 1)[-1]
+        endpoint_urlparsed = urlparse(endpoint_url)
+        key_in_response_to_return = endpoint_urlparsed.path.rsplit("/", 1)[-1]
 
         # Check for no data in response from API
         if key_in_response_to_return not in parsed_response:
