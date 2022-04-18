@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="basic_zoom",
-    version="0.0.3",
+    version="0.0.4",
     author="Justin Steinberg",
     author_email="jsteinberg@gmail.com",
     install_requires=["requests", "PyJWT", "requests_oauthlib"],
