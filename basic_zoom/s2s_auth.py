@@ -14,8 +14,8 @@ class S2S_AUTH(requests.auth.AuthBase):
         self._S2S_CLIENT_ID = S2S_CLIENT_ID
         self._S2S_CLIENT_SECRET = S2S_CLIENT_SECRET
         self._S2S_TOKEN_INDEX = "0"
-        self._S2S_ACCESS_TOKEN_EXPIRATION = None
-        self._S2S_ACCESS_TOKEN = self.generate_new_s2s_access_token()
+        self._S2S_ACCESS_TOKEN_EXPIRATION = datetime.datetime.utcnow()
+        self._S2S_ACCESS_TOKEN = None
 
     def generate_new_s2s_access_token(self):
 
@@ -41,8 +41,11 @@ class S2S_AUTH(requests.auth.AuthBase):
     def __call__(self, r):
         # This is called by requests auth
 
-        if datetime.datetime.utcnow() >= self._S2S_ACCESS_TOKEN_EXPIRATION:
-            # token has expired, so renew it....
+        if (
+            datetime.datetime.utcnow() >= self._S2S_ACCESS_TOKEN_EXPIRATION
+            or self._S2S_ACCESS_TOKEN == None
+        ):
+            # token doesnt exist yet or has expired, so renew it....
             self._S2S_ACCESS_TOKEN = self.generate_new_s2s_access_token()
 
         r.headers["Authorization"] = f"Bearer {self._S2S_ACCESS_TOKEN}"
