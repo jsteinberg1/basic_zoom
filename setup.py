@@ -2,10 +2,10 @@ import setuptools
 
 setuptools.setup(
     name="basic_zoom",
-    version="0.0.6",
+    version="0.0.7",
     author="Justin Steinberg",
     author_email="jsteinberg@gmail.com",
-    install_requires=["requests", "PyJWT", "requests_oauthlib"],
+    install_requires=["requests", "PyJWT", "requests_oauthlib", "rich"],
     description="REST api client for Zoom",
     long_description="REST api client for Zoom",
     long_description_content_type="text/markdown",
