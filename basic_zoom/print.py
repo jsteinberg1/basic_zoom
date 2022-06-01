@@ -33,4 +33,4 @@ def pretty_print(result):
         print_json(json.dumps(result))
         print(f"\nLength of list: {len(result)}")
     else:
-        return result
+        print(result)
