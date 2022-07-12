@@ -202,6 +202,12 @@ class ZoomAPIClient(object):
         )
         return self.parse_request_response(response)
 
+    def put(self, endpoint_url: str, params: dict = None, data: dict = None):
+        response = self._session.put(
+            f"{self._server}{endpoint_url}", params=params, json=data
+        )
+        return self.parse_request_response(response)
+
     def delete(self, endpoint_url: str):
         response = self._session.delete(f"{self._server}{endpoint_url}")
         return self.parse_request_response(response)
