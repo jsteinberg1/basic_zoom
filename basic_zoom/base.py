@@ -88,12 +88,7 @@ class ZoomAPIClient(object):
                     return response.content
 
         else:
-            if "message" in response.json():
-                raise ZoomAPIError(response.json()["message"])
-            else:
-                raise ZoomAPIError(
-                    f"Received status code {response.status_code} on {response.url}"
-                )
+            raise ZoomAPIError(response.text)
 
     def get(
         self,
