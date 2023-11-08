@@ -50,3 +50,15 @@ class S2S_AUTH(requests.auth.AuthBase):
 
         r.headers["Authorization"] = f"Bearer {self._S2S_ACCESS_TOKEN}"
         return r
+
+
+    @property
+    def access_token(self):
+        if (
+            datetime.datetime.utcnow() >= self._S2S_ACCESS_TOKEN_EXPIRATION
+            or self._S2S_ACCESS_TOKEN == None
+        ):
+            # token doesnt exist yet or has expired, so renew it....
+            self._S2S_ACCESS_TOKEN = self.generate_new_s2s_access_token()
+
+        return self._S2S_ACCESS_TOKEN
