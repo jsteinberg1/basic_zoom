@@ -141,11 +141,11 @@ class ZoomAPIClient(object):
         date_error = False
 
         if params.get("from") is not None:
-            if params.get("from") != parsed_response.get("from"):
+            if params.get("from") not in parsed_response.get("from"):
                 date_error = True
 
         if params.get("to") is not None:
-            if params.get("to") != parsed_response.get("to"):
+            if params.get("to") not in parsed_response.get("to"):
                 date_error = True
 
         if date_error:
